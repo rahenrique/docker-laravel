@@ -1,13 +1,13 @@
 version: '3'
-services:
 
+services:
   #PHP Service
-  app:
+  rah-app:
     build:
       context: .
       dockerfile: Dockerfile
     image: digitalocean.com/php
-    container_name: app
+    container_name: rah-app
     restart: unless-stopped
     tty: true
     environment:
@@ -21,9 +21,9 @@ services:
       - app-network
 
   #Nginx Service
-  webserver:
+  rah-webserver:
     image: nginx:alpine
-    container_name: webserver
+    container_name: rah-webserver
     restart: unless-stopped
     tty: true
     ports:
@@ -36,9 +36,9 @@ services:
       - app-network
 
   #MySQL Service
-  db:
+  rah-db:
     image: mysql:5.7.22
-    container_name: db
+    container_name: rah-db
     restart: unless-stopped
     tty: true
     ports:
@@ -51,6 +51,19 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
       - ./mysql/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - app-network
+
+  # MongoDB
+  rah-mongodb:
+    image: mongo:latest
+    container_name: rah-mongodb
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "27017:27017"
+    logging:
+      driver: none
     networks:
       - app-network
 

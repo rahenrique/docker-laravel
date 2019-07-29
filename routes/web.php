@@ -1,5 +1,7 @@
 <?php
 
+use MongoDB\Client as Mongo;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,6 +12,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('mongo', function(Request $request) {
+    $collection = (new Mongo)->mydatabase->mycollection;
+    return $collection->find()->toArray();
+});
 
 Route::get('/', function () {
     return view('welcome');
